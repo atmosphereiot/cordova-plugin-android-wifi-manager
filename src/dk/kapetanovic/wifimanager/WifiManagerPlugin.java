@@ -462,11 +462,24 @@ public class WifiManagerPlugin extends CordovaPlugin {
     }
 
     private void bindToWiFi(CallbackContext callbackContext) throws JSONException {
-        callbackContext.sendPluginResult(OK("HI!!!"));
+        // Get a list of all networks
+        for(Network network : ConnectivityManager.getAllNetworks()) {
+            NetworkInfo info = ConnectivityManager.getNetworkInfo(network);
+            if(info.getType() == ConnectivityManager.TYPE_WIFI)
+            {
+                // Bind to this network
+                boolean result = connectivityManager.bindProcessToNetwork(network);
+                callbackContext.sendPluginResult(OK(result));
+                return;
+            }
+        }
+
+        callbackContext.sendPluginResult(ERROR("No WiFi Network"));
     }
 
     private void unbindFromWiFi(CallbackContext callbackContext) throws JSONException {
-        callbackContext.sendPluginResult(OK("Unbound!"));
+        boolean result = connectivityManager.bindProcessToNetwork(null);
+        callbackContext.sendPluginResult(OK(result));
     }
 
     private void onChange(CallbackContext callbackContext) {
