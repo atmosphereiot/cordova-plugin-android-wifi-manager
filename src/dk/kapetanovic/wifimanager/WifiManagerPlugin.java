@@ -14,6 +14,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.provider.Settings;
 import android.text.TextUtils;
 
@@ -79,6 +80,7 @@ public class WifiManagerPlugin extends CordovaPlugin {
     private static final String ACTION_UNBIND_FROM_WIFI = "unbindFromWiFi";
 
     private WifiManager wifiManager;
+    private ConnectivityManager connectivityManager;
     private volatile CallbackContext onChange;
     private BroadcastReceiver broadcastReceiver = new WifiBroadcastReceiver();
     private final List<CallbackContext> scanResultsCallbacks = new ArrayList<CallbackContext>();
@@ -92,6 +94,11 @@ public class WifiManagerPlugin extends CordovaPlugin {
                 .getApplication()
                 .getApplicationContext()
                 .getSystemService(Context.WIFI_SERVICE);
+
+        connectivityManager = (ConnectivityManager) cordova.getActivity()
+                .getApplication()
+                .getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Override
@@ -463,12 +470,12 @@ public class WifiManagerPlugin extends CordovaPlugin {
 
     private void bindToWiFi(CallbackContext callbackContext) throws JSONException {
         // Get a list of all networks
-        for(Network network : ConnectivityManager.getAllNetworks()) {
-            NetworkInfo info = ConnectivityManager.getNetworkInfo(network);
+        for(Network network : connectivityManager.getAllNetworks()) {
+            NetworkInfo info = connectivityManager.getNetworkInfo(network);
             if(info.getType() == ConnectivityManager.TYPE_WIFI)
             {
                 // Bind to this network
-                boolean result = ConnectivityManager.bindProcessToNetwork(network);
+                boolean result = connectivityManager.bindProcessToNetwork(network);
                 callbackContext.sendPluginResult(OK(result));
                 return;
             }
@@ -478,7 +485,7 @@ public class WifiManagerPlugin extends CordovaPlugin {
     }
 
     private void unbindFromWiFi(CallbackContext callbackContext) throws JSONException {
-        boolean result = ConnectivityManager.bindProcessToNetwork(null);
+        boolean result = connectivityManager.bindProcessToNetwork(null);
         callbackContext.sendPluginResult(OK(result));
     }
 
