@@ -75,6 +75,8 @@ public class WifiManagerPlugin extends CordovaPlugin {
     private static final String ACTION_START_SCAN = "startScan";
     private static final String ACTION_UPDATE_NETWORK = "updateNetwork";
     private static final String ACTION_ON_CHANGE = "onChange";
+    private static final String ACTION_BIND_TO_WIFI = "bindToWiFi";
+    private static final String ACTION_UNBIND_FROM_WIFI = "unbindFromWiFi";
 
     private WifiManager wifiManager;
     private volatile CallbackContext onChange;
@@ -196,6 +198,8 @@ public class WifiManagerPlugin extends CordovaPlugin {
         else if(action.equals(ACTION_START_SCAN)) startScan(callbackContext);
         else if(action.equals(ACTION_UPDATE_NETWORK)) updateNetwork(args, callbackContext);
         else if(action.equals(ACTION_ON_CHANGE)) onChange(callbackContext);
+        else if(action.equals(ACTION_BIND_TO_WIFI)) bindToWiFi(callbackContext);
+        else if(action.equals(ACTION_UNBIND_FROM_WIFI)) unbindFromWiFi(callbackContext);
         else return false;
 
         return true;
@@ -455,6 +459,14 @@ public class WifiManagerPlugin extends CordovaPlugin {
         WifiConfiguration wifiConfig = fromJSONWifiConfiguration(json);
         int networkId = wifiManager.updateNetwork(wifiConfig);
         callbackContext.sendPluginResult(OK(networkId));
+    }
+
+    private void bindToWiFi(CallbackContext callbackContext) throws JSONException {
+        callbackContext.sendPluginResult(OK("HI!!!"));
+    }
+
+    private void unbindFromWiFi(CallbackContext callbackContext) throws JSONException {
+        callbackContext.sendPluginResult(OK("Unbound!"));
     }
 
     private void onChange(CallbackContext callbackContext) {

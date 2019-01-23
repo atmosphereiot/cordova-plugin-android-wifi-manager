@@ -8,8 +8,8 @@
   <author>Mirza Kapetanovic</author>
   <keywords></keywords>
   <license>ISC</license>
-  <repo>git+https://github.com/kapetan/cordova-plugin-android-wifi-manager.git</repo>
-  <issue>https://github.com/kapetan/cordova-plugin-android-wifi-manager/issues</issue>
+  <repo>git+https://github.com/atmosphereiot/cordova-plugin-android-wifi-manager.git</repo>
+  <issue>https://github.com/atmosphereiot/cordova-plugin-android-wifi-manager/issues</issue>
   <platform name="android">
     <js-module src="www/index.js" name="WifiManager">
       <clobbers target="cordova.plugins.WifiManager" />

@@ -21,6 +21,8 @@ var METHODS = [
   'setWifiApEnabled',
   'setWifiEnabled',
   'startScan',
+  'bindToWiFi',
+  'unbindFromWiFi',
   'updateNetwork'
 ]
 
